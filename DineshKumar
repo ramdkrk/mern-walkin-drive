@@ -1,0 +1,125 @@
+import express from "express";
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+let users: any[] = [
+  {
+    id: 1,
+    name: "testUser",
+    age: 25,
+    role: "Full stack developer",
+  },
+];
+
+// GET /users → Return a list of users
+
+// POST /users → Add a new user
+
+// GET /users/:id → Get user details by ID
+
+// PUT /users/:id → Update a user’s data
+
+// DELETE /users/:id → Delete a user
+
+app.get("/", (req, res) => {
+  res.send("Hello CodeSandbox!");
+});
+
+app.get("/users", (req, res) => {
+  return res.status(200).send({
+    message: "Success",
+    data: users,
+  });
+});
+
+app.get("/users/:id", (req, res) => {
+  const id: number = Number(req.param);
+  if (!id) {
+    return res.status(400).send({
+      message: "Invalid id",
+    });
+  }
+  const user = users.filter((val) => id === val.id);
+  if (!user) {
+    return res.status(400).send({
+      message: "Invalid id",
+    });
+  }
+  return res.status(200).send({
+    message: "Success",
+    data: users,
+  });
+});
+
+app.post("/users", (req, res) => {
+  const { name, age, role } = req.body;
+  if (!name || !age || !role) {
+    return res.status(400).send({
+      message: "Invalid params",
+    });
+  }
+  let id = 0;
+
+  const lastUser = users.length !== 0 ? users[users.length - 1] : 0;
+  id = lastUser ? lastUser.id : 1;
+  const user = { id, name, age, role };
+  users.push(user);
+  return res.status(200).send({
+    message: "Success",
+    data: user,
+  });
+});
+
+app.put("/users:id", (req, res) => {
+  const { name, age, role } = req.body;
+  const id = Number(req.params);
+  if (!id) {
+    return res.status(400).send({
+      message: "Invalid id",
+    });
+  }
+
+  const updatedUsers = users.map((val) => {
+    if (id === val.id) {
+      val.name = name || val.name;
+      val.age = age || val.age;
+      val.role = role || val.role;
+    }
+    return val;
+  });
+  users = updatedUsers;
+  return res.status(200).send({
+    message: "Success",
+  });
+});
+
+app.delete("/users/:id", (req, res) => {
+  const id = Number(req.params);
+  if (!id) {
+    return res.status(400).send({
+      message: "Invalid id",
+    });
+  }
+  let ind;
+  users.findIndex((val, index) => {
+    if (id === val.id) {
+      ind = index;
+    }
+  });
+  if (!ind) {
+    return res.status(400).send({
+      message: "Invalid id",
+    });
+  }
+  users.splice(ind, 1);
+
+  return res.status(200).send({
+    message: "Success",
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Sandbox listening on port ${port}`);
+});
