@@ -1,0 +1,36 @@
+import React, { useState } from 'react';
+import { THEME } from '../constant/common';
+
+const ThemeToggleSwitch = () => {
+  const [isDark, setDarkState] = useState(false);
+
+  const isUserThemeAvailable =
+    localStorage.getItem('@userThemePreference') ?? THEME.LIGHT;
+
+  const setUserThemePreference = (theme) =>
+    localStorage.setItem('@userThemePreference', theme);
+
+    
+
+  const renderThemeButton = () => {
+    if (isUserThemeAvailable === THEME.LIGHT) {
+      return (
+        <div>
+          <button onClick={() => setUserThemePreference('DARK')} type="button">
+            Dark
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button onClick={() => setUserThemePreference('LIGHT')}>Light</button>
+        </div>
+      );
+    }
+  };
+
+  return <div>{renderThemeButton()}</div>;
+};
+
+export default ThemeToggleSwitch;
