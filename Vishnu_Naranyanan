@@ -1,0 +1,95 @@
+Vishnu Naranyanan:
+===============
+
+import { right } from '@popperjs/core';
+import React, { useEffect, useState } from 'react';
+
+export const TabForm = () => {
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const componentConfig = [
+    {
+      name: 'Contact',
+      component: <Contact />,
+    },
+    {
+      name: 'Features',
+      component: <Features />,
+    },
+    {
+      name: 'Overview',
+      component: <Overview />,
+    },
+  ];
+
+  const handleTabs = (index) => {
+    setCurrentTab(index);
+  };
+
+  const currentComponent = componentConfig[currentTab].component;
+
+  return (
+    <div className="container">
+      <div className="tabs__Container">
+        {componentConfig.map((component, index) => {
+          return (
+            <button onClick={() => handleTabs(index)}>{component.name}</button>
+          );
+        })}
+      </div>
+      {currentComponent}
+    </div>
+  );
+};
+
+export const Contact = () => {
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    //faking api call
+    let timer = setTimeout(() => setLoading(false), 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  if (isLoading) {
+    return <div>Loading ... </div>;
+  }
+  return <div>Contact</div>;
+};
+
+export const Features = () => {
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let timer = setTimeout(() => setLoading(false), 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  if (isLoading) {
+    return <div>Loading ... </div>;
+  }
+  return <div>Featurees</div>;
+};
+
+export const Overview = () => {
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let timer = setTimeout(() => setLoading(false), 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading ... </div>;
+  }
+  return <div>Overview</div>;
+};
+
+export const App = () => {
+  return (
+    <div className="app">
+      <TabForm />
+    </div>
+  );
+};
