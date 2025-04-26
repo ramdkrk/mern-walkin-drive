@@ -1,0 +1,35 @@
+import React, { useState, useEffect } from 'react';
+import { ButtonCounter } from './components/ButtonCounter';
+
+export const App = () => {
+  const name: string = 'Hello React Button';
+  const [toggle, setToggle] = useState('');
+  const defaultColor = 'white';
+
+  const onChildClicked = (e: number) => {
+    setToggle((old) => (old === 'red' ? 'white' : 'red'));
+    localStorage.setItem('color', toggle === 'red' ? 'white' : 'red');
+  };
+
+  useEffect(() => {
+    const item = localStorage.getItem('color');
+    if (item) {
+      setToggle(item);
+    } else {
+      setToggle(defaultColor);
+    }
+  }, []);
+
+  return (
+    <div className="p-2" style={{ background: toggle ? toggle : 'white' }}>
+      <h1>React TSX Starter</h1>
+      <div>containing:</div>
+      <ul>
+        <li>React</li>
+        <li>Twitter Bootstrap</li>
+        <li>Basic Functional Components App and ButtonCounter</li>
+      </ul>
+      <ButtonCounter name={name} onClicked={(e) => onChildClicked(e)} />
+    </div>
+  );
+};
